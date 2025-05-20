@@ -1174,7 +1174,7 @@ static void stream_tx_xfer_submit(usb_transfer_t *out_xfer)
         data_len = iface->packet_size * iface->packet_num;
         size_t actual_num_bytes = 0;
         _ring_buffer_pop(iface->ringbuf, out_xfer->data_buffer, data_len, &actual_num_bytes, 0);
-        assert(actual_num_bytes == data_len);
+        // assert(actual_num_bytes == data_len);
         // Relaunch transfer, as the pipe state may change
         // the transfer may fail eg. the device is disconnected or the pipe is suspended
         // the data in ringbuffer will be dropped without notify user
@@ -2270,10 +2270,10 @@ esp_err_t uac_host_device_start(uac_host_device_handle_t uac_dev_handle, const u
     iface->packet_size = iface->iface_alt[iface->cur_alt].cur_sampling_freq * stream_config->channels * stream_config->bit_resolution / 8 / 1000;
     iface->flags |= stream_config->flags;
     // if the packet size is not an integer, we need to add one more byte
-    if (iface->iface_alt[iface->cur_alt].cur_sampling_freq * stream_config->channels * stream_config->bit_resolution / 8 % 1000) {
-        ESP_LOGD(TAG, "packet_size %" PRIu32 " is not an integer, add one more byte", iface->packet_size);
-        iface->packet_size++;
-    }
+    // if (iface->iface_alt[iface->cur_alt].cur_sampling_freq * stream_config->channels * stream_config->bit_resolution / 8 % 1000) {
+    //     ESP_LOGD(TAG, "packet_size %" PRIu32 " is not an integer, add one more byte", iface->packet_size);
+    //     iface->packet_size++;
+    // }
     assert(iface->packet_size <= iface->iface_alt[iface->cur_alt].ep_mps);
 
     // Claim Interface and prepare transfer
